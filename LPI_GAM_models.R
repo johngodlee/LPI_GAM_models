@@ -1,19 +1,20 @@
 # Creating General Additive Models for the LPI, according to Collen et al. (2007)
 # John Godlee (johngodlee@gmail.com)
 
-# Packages
+# Packages ----
 library(dplyr)
 library(tidyr)
 library(readr)
 library(ggplot2)
+library(mgcv)
 
-# Set working directory
+# Set working directory ----
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-# Load Data
+# Load Data ----
 load("LPIdata_Feb2016.RData")
 
-# Convert data to long format and add useful columns
+# Convert data to long format and add useful columns ----
 LPI <- LPIdata_Feb2016 %>%
   gather("year", "pop", 26:70)  %>%  # Transform to long format, gathering each 
   mutate(year = parse_number(.$year)) %>%  # Deprecated, extract_numeric() -> parse_numeric() -> parse_number(), extract numeric from atomic
@@ -34,8 +35,13 @@ LPI <- LPIdata_Feb2016 %>%
   mutate(., meanpop.size = mean(meanpop)) %>%  # Create column for mean mean population
   ungroup(.)
 
-# Split the data frame into a list of data frames based on species, collection id, and units of collection
+# Split the data frame into a list of data frames based on species, collection id, and units of collection ----
 LPI_list <- split(LPI, f = list(LPI$Species, LPI$id, LPI$Units))
+  # This crashes my laptop
+  # Maybe book some time on the big computer
 
-## Create GAM models for each list item
+# Create GAM models for each list item using mgcv ----
 
+# Average GAMs within each species ----
+
+# Plot results of GAM models ----
